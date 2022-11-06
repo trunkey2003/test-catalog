@@ -1,4 +1,5 @@
 const Product = require('../models/product.model');
+const Catalog = require('../models/catalog.model');
 const respond = require('../services/respond.service');
 
 class productController {
@@ -11,6 +12,19 @@ class productController {
         .catch((err) => {
             respond.error(res, 500, err);
         })
+    }
+
+    getProductByCatalogId(req, res, next) {
+        const { catalogId } = req.params;
+        if (!catalogId) return respond.error(res, 400, { message: 'Invalid catalog id' });
+        Product.find({ catalogId }).populate('catalogId')
+            .then((products) => {
+                respond.success(res, 200, {products});
+            })
+            .catch((err) => {
+                console.log(err);
+                respond.error(res, 500, err);
+            })
     }
 
     addProduct(req, res, next) {

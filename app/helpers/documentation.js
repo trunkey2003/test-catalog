@@ -199,6 +199,37 @@ const swaggerDocumentation = {
         },
 
         "/api/v1/product/catalog/{catalogId}": {
+            get: {
+                tags: ["product"],
+                description: "get all products by catalog id",
+                parameters: [
+                    {
+                        name: "catalogId",
+                        in: "path",
+                        description: "Catalog Id",
+                        required: true,
+                        type: "string",
+                        format: "objectid"
+                    }
+                ],
+                responses: {
+                    200: {
+                        description: "Success",
+                        content: {
+                            "application/json": {
+                                schema: getResponseSchema({ products: { type: [{ type: productSchema }] } }),
+                                example: getResponse(true, null, { products: [exampleProduct] }),
+                            }
+                        }
+                    },
+                    400: {
+                        description: "Bad Request",
+                    },
+                    500: {
+                        description: "Internal Server Error",
+                    }
+                }
+            },
             post: {
                 tags: ["product"],
                 description: "Add product to catalog",
