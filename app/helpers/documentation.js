@@ -217,8 +217,8 @@ const swaggerDocumentation = {
                         description: "Success",
                         content: {
                             "application/json": {
-                                schema: getResponseSchema({ products: { type: [{ type: productSchema }] } }),
-                                example: getResponse(true, null, { products: [exampleProduct] }),
+                                schema: getResponseSchema({type: 'array', items: productSchema}),
+                                example: getResponse(true, null, [exampleProduct]),
                             }
                         }
                     },
