@@ -8,16 +8,7 @@ class catalogController {
         if (!id) return respond.error(res, 404, {message: 'Invalid catalog id'});
         Catalog.findById(id).then((catalog) => {
             if (catalog) {
-                const catalogId = catalog._id;
-                const catalogCopy = {...catalog._doc};
-                Product.find({ catalogId })
-                    .then((products) => {
-                        respond.success(res, 200, {...catalogCopy, products});
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        respond.error(res, 500, err);
-                    })
+                respond.success(res, 200, catalog);
             } else respond.error(res, 404, {message: 'Catalog not found'});
         })
         .catch((err) => {
