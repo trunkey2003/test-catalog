@@ -14,6 +14,7 @@ const exampleCatalog = {
     _id: "5e3e3e3e3e3e3e3e3e3e3e3e",
     name: "catalog",
     description: "catalog",
+    products: [exampleProduct],
 };
 
 const productSchema = {
@@ -47,14 +48,16 @@ const catalogSchema = {
         _id: { type: 'string', format: 'objectid' },
         name: { type: 'string', required: true, minlength: 3, maxlength: 50 },
         description: { type: 'string', minlength: 3, maxlength: 500 },
+        products: { type: 'Array', items: productSchema },
     }
 };
 
-const catalogSchemaNoId = {
+const catalogSchemaNoIdNoProduct = {
     type: 'object',
     properties: {
         ...catalogSchema.properties,
         _id: undefined,
+        products: undefined,
     }
 };
 
@@ -139,7 +142,7 @@ const swaggerDocumentation = {
                     required: true,
                     content: {
                         "application/json": {
-                            schema: catalogSchemaNoId
+                            schema: catalogSchemaNoIdNoProduct
                         }
                     }
                 },
@@ -199,37 +202,6 @@ const swaggerDocumentation = {
         },
 
         "/api/v1/product/catalog/{catalogId}": {
-            get: {
-                tags: ["product"],
-                description: "get all products by catalog id",
-                parameters: [
-                    {
-                        name: "catalogId",
-                        in: "path",
-                        description: "Catalog Id",
-                        required: true,
-                        type: "string",
-                        format: "objectid"
-                    }
-                ],
-                responses: {
-                    200: {
-                        description: "Success",
-                        content: {
-                            "application/json": {
-                                schema: getResponseSchema({ products: { type: [{ type: productSchema }] } }),
-                                example: getResponse(true, null, { products: [exampleProduct] }),
-                            }
-                        }
-                    },
-                    400: {
-                        description: "Bad Request",
-                    },
-                    500: {
-                        description: "Internal Server Error",
-                    }
-                }
-            },
             post: {
                 tags: ["product"],
                 description: "Add product to catalog",

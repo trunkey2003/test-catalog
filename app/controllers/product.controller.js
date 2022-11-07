@@ -19,7 +19,7 @@ class productController {
         if (!catalogId) return respond.error(res, 400, { message: 'Invalid catalog id' });
         Product.find({ catalogId }).populate('catalogId')
             .then((products) => {
-                respond.success(res, 200, {products});
+                if (products && products.length > 0) respond.success(res, 200, {products}); else respond.error(res, 404, {message: 'Products not found'});
             })
             .catch((err) => {
                 console.log(err);
